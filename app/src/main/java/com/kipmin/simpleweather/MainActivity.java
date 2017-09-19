@@ -1,6 +1,9 @@
 package com.kipmin.simpleweather;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
@@ -29,10 +32,11 @@ import okhttp3.Response;
 public class MainActivity extends AppCompatActivity {
 
     protected static final int REQUEST_CODE_PICK_CITY = 0;
-    protected static int FIRST_OPEN = 0;
+//    protected static int FIRST_OPEN = 0;
 
     private ViewPager viewPager;
     private CityAdapter cityAdapter;
+    private SharedPreferences isFirstPreferences, versionPreferences;
     private TextView result;
     private String city;
     private List<WeatherFragment> weatherFragmentList;
@@ -42,13 +46,8 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.d("MainAvtivity", "onCreate: " + FIRST_OPEN);
-        if (FIRST_OPEN == 0) {
-            String address = "https://www.kipmin.cc/h/cityList.json";
-            InitDatabases(address);
-            FIRST_OPEN = 1;
-        }
 
+        isFirstOpen();//判断是否首次启动或更新后首次启动
         weatherFragmentList = new ArrayList<>();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_fragment);
         setSupportActionBar(toolbar);
@@ -124,4 +123,38 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    private float getVersionCode(Context context) {
+        float versionCode = 0;
+        try {
+            versionCode = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return  versionCode;
+    }
+
+    private boolean isFirstOpen() {
+        isFirstPreferences = getSharedPreferences("count", MODE_PRIVATE);
+        float nowVersionCode = getVersionCode(this);
+        Log.i("MainActivity", "isFirstOpen: " + nowVersionCode);
+        versionPreferences = getSharedPreferences("version", MODE_PRIVATE);//是否会覆盖上面语句的句子
+        int count = isFirstPreferences.getInt("count", 0);
+        float spVersionCode = versionPreferences.getFloat("version", 0);
+        SharedPreferences.Editor versionEditor = versionPreferences.edit();
+        SharedPreferences.Editor isFirstEditor = isFirstPreferences.edit();
+
+        if (count == 0) { //应用被首次安装启动
+            versionEditor.putFloat("spVersionCode", nowVersionCode);
+            String address = "https://www.kipmin.cc/h/cityList.json";
+            InitDatabases(address);
+        } else if (nowVersionCode > spVersionCode){ //更新后首次启动
+            versionEditor.putFloat("spVersionCode", nowVersionCode);
+        }
+        isFirstEditor.putInt("count", ++count);
+        versionEditor.commit();
+        isFirstEditor.commit();
+        return true;
+    }
+
 }

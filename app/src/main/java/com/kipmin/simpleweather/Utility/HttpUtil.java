@@ -53,6 +53,7 @@ public class HttpUtil {
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
+                    Log.d("HttpUtil", "run: 无法读取数据");
                 }
             }
         }).start();

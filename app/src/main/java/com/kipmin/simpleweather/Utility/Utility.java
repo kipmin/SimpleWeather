@@ -1,5 +1,7 @@
 package com.kipmin.simpleweather.Utility;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.kipmin.simpleweather.Db.CityDb;
 import com.kipmin.simpleweather.Gson.Weather.Weather;
@@ -35,6 +37,7 @@ public class Utility {
                     cityDb.save();
                 }
             }
+            Log.d("Kipmin", "handleCity: OK");
             return true;
         } catch (Exception e) {
             return false;
