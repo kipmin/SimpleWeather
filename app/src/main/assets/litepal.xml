@@ -1,0 +1,11 @@
+<litepal>
+
+    <dbname value="weather" />
+
+    <version value="1" />
+
+    <list>
+        <mapping class="com.kipmin.simpleweather.Db.CityDb" />
+    </list>
+
+</litepal>
