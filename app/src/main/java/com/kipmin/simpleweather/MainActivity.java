@@ -10,10 +10,12 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.kipmin.simpleweather.Adapter.CityAdapter;
 import com.kipmin.simpleweather.Db.CityDb;
 import com.kipmin.simpleweather.Utility.HttpUtil;
 import com.kipmin.simpleweather.Utility.Utility;
@@ -32,7 +34,6 @@ import okhttp3.Response;
 public class MainActivity extends AppCompatActivity {
 
     protected static final int REQUEST_CODE_PICK_CITY = 0;
-//    protected static int FIRST_OPEN = 0;
 
     private ViewPager viewPager;
     private CityAdapter cityAdapter;
@@ -49,16 +50,18 @@ public class MainActivity extends AppCompatActivity {
 
         isFirstOpen();//判断是否首次启动或更新后首次启动
         weatherFragmentList = new ArrayList<>();
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_fragment);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        Button button = (Button) findViewById(R.id.city_button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivityForResult(new Intent(MainActivity.this, CityPickerActivity.class),
-                        REQUEST_CODE_PICK_CITY);
-            }
-        });
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+//        Button button = (Button) findViewById(R.id.city_button);
+//        button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                startActivityForResult(new Intent(MainActivity.this, CityPickerActivity.class),
+//                        REQUEST_CODE_PICK_CITY);
+//            }
+//        });
         viewPager = (ViewPager) findViewById(R.id.view_pager);
         result = (TextView) findViewById(R.id.result_city);
         FragmentManager manager = getSupportFragmentManager();
@@ -71,23 +74,33 @@ public class MainActivity extends AppCompatActivity {
                 REQUEST_CODE_PICK_CITY);
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.add_list, menu);
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()){
-//            case R.id.add:
-//                startActivityForResult(new Intent(this, CityPickerActivity.class),
-//                        REQUEST_CODE_PICK_CITY);
-//                break;
-//            default:
-//        }
-//        return true;
-//    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.add_list, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.add:
+                startActivityForResult(new Intent(MainActivity.this, CityPickerActivity.class),
+                        REQUEST_CODE_PICK_CITY);
+                break;
+            case R.id.about:
+                Toast.makeText(this, "About", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.setting:
+                Toast.makeText(this, "Setting", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.select_city:
+                Toast.makeText(this, "Select City", Toast.LENGTH_SHORT).show();
+                break;
+            default:
+        }
+        return true;
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -113,13 +126,16 @@ public class MainActivity extends AppCompatActivity {
         HttpUtil.sendOkHttpRequest(address, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Log.e("MainActivity", "onFailure: ",e );
+                Toast.makeText(MainActivity.this, "无网络连接", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String responseText = response.body().string();
-                Utility.handleCity(responseText);
+                if (Utility.handleCity(responseText));
+                else {
+                    throw new IOException("JSON未成功解析");
+                }
             }
         });
     }

@@ -6,32 +6,35 @@
     android:layout_height="match_parent"
     tools:context="com.kipmin.simpleweather.MainActivity">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimary"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        >
 
-    </android.support.v7.widget.Toolbar>
 
-    <Button
-        android:id="@+id/city_button"
-        android:layout_margin="10dp"
-        android:layout_alignParentRight="true"
-        android:layout_width="30dp"
-        android:layout_height="30dp" />
+    <!--app:popupTheme="@style/ThemeOverlay.AppCompat.Light"-->
+
+    <!--<Button-->
+        <!--android:id="@+id/city_button"-->
+        <!--android:layout_margin="10dp"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_width="30dp"-->
+        <!--android:layout_height="30dp"-->
+        <!--/>-->
 
     <android.support.v4.view.ViewPager
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        >
+        android:layout_alignParentTop="true">
 
     </android.support.v4.view.ViewPager>
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimaryHalf"
+        android:theme="@style/ToolbarTheme"
+        >
+
+    </android.support.v7.widget.Toolbar>
 
 
 </RelativeLayout>
