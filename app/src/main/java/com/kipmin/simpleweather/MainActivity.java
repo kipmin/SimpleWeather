@@ -17,19 +17,15 @@ import android.widget.Toast;
 
 import com.kipmin.simpleweather.Adapter.CityAdapter;
 import com.kipmin.simpleweather.Db.CityDb;
-import com.kipmin.simpleweather.Utility.HttpUtil;
 import com.kipmin.simpleweather.Utility.Utility;
 import com.zaaach.citypicker.CityPickerActivity;
 
 import org.litepal.crud.DataSupport;
 
-import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -54,14 +50,6 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-//        Button button = (Button) findViewById(R.id.city_button);
-//        button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                startActivityForResult(new Intent(MainActivity.this, CityPickerActivity.class),
-//                        REQUEST_CODE_PICK_CITY);
-//            }
-//        });
         viewPager = (ViewPager) findViewById(R.id.view_pager);
         result = (TextView) findViewById(R.id.result_city);
         FragmentManager manager = getSupportFragmentManager();
@@ -72,6 +60,32 @@ public class MainActivity extends AppCompatActivity {
         //启动
         startActivityForResult(new Intent(MainActivity.this, CityPickerActivity.class),
                 REQUEST_CODE_PICK_CITY);
+    }
+
+    private boolean isFirstOpen() {
+        isFirstPreferences = getSharedPreferences("count", MODE_PRIVATE);
+        float nowVersionCode = getVersionCode(this);
+        Log.i("MainActivity", "isFirstOpen: " + nowVersionCode);
+        versionPreferences = getSharedPreferences("version", MODE_PRIVATE);
+        int count = isFirstPreferences.getInt("count", 0);
+        float spVersionCode = versionPreferences.getFloat("version", 0);
+        SharedPreferences.Editor versionEditor = versionPreferences.edit();
+        SharedPreferences.Editor isFirstEditor = isFirstPreferences.edit();
+
+        if (count == 0) { //应用被首次安装启动
+            versionEditor.putFloat("spVersionCode", nowVersionCode);
+            InitDatabases(getFromAssets("cityList.json"));
+        } else if (nowVersionCode > spVersionCode){ //更新后首次启动
+            versionEditor.putFloat("spVersionCode", nowVersionCode);
+        }
+        isFirstEditor.putInt("count", ++count);
+        versionEditor.apply();
+        isFirstEditor.apply();
+        return true;
+    }
+
+    private void InitDatabases(String response) {
+        Utility.handleCity(response);
     }
 
     @Override
@@ -94,13 +108,12 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "Setting", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.select_city:
-                Toast.makeText(this, "Select City", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(MainActivity.this, SelectCityActivity.class));
                 break;
             default:
         }
         return true;
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -109,35 +122,13 @@ public class MainActivity extends AppCompatActivity {
                 String city = data.getStringExtra(CityPickerActivity.KEY_PICKED_CITY);
                 List<CityDb> cityDbList;
                 String cityId;
-//                if (!city.isEmpty()) {
-                    cityDbList = DataSupport.where("cnCity = ?", String.valueOf(city)).find(CityDb.class);
-                    cityId = cityDbList.get(0).getWeatherId();
-//                } else {
-//                    cityId = city;
-//                }
+                cityDbList = DataSupport.where("cnCity = ?", String.valueOf(city)).find(CityDb.class);
+                cityId = cityDbList.get(0).getWeatherId();
                 WeatherFragment fragment = new WeatherFragment().newInstance(cityId);
                 weatherFragmentList.add(fragment);
                 cityAdapter.notifyDataSetChanged();
             }
         }
-    }
-
-    public void InitDatabases(String address) {
-        HttpUtil.sendOkHttpRequest(address, new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Toast.makeText(MainActivity.this, "无网络连接", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String responseText = response.body().string();
-                if (Utility.handleCity(responseText));
-                else {
-                    throw new IOException("JSON未成功解析");
-                }
-            }
-        });
     }
 
     private float getVersionCode(Context context) {
@@ -150,27 +141,38 @@ public class MainActivity extends AppCompatActivity {
         return  versionCode;
     }
 
-    private boolean isFirstOpen() {
-        isFirstPreferences = getSharedPreferences("count", MODE_PRIVATE);
-        float nowVersionCode = getVersionCode(this);
-        Log.i("MainActivity", "isFirstOpen: " + nowVersionCode);
-        versionPreferences = getSharedPreferences("version", MODE_PRIVATE);//是否会覆盖上面语句的句子
-        int count = isFirstPreferences.getInt("count", 0);
-        float spVersionCode = versionPreferences.getFloat("version", 0);
-        SharedPreferences.Editor versionEditor = versionPreferences.edit();
-        SharedPreferences.Editor isFirstEditor = isFirstPreferences.edit();
-
-        if (count == 0) { //应用被首次安装启动
-            versionEditor.putFloat("spVersionCode", nowVersionCode);
-            String address = "https://www.kipmin.cc/h/cityList.json";
-            InitDatabases(address);
-        } else if (nowVersionCode > spVersionCode){ //更新后首次启动
-            versionEditor.putFloat("spVersionCode", nowVersionCode);
+    // 读取assets中的文件
+    private String getFromAssets(String fileName){
+        try {
+            InputStreamReader inputReader = new InputStreamReader( getResources().getAssets().open(fileName) );
+            BufferedReader bufReader = new BufferedReader(inputReader);
+            String line="";
+            String Result="";
+            while((line = bufReader.readLine()) != null)
+                Result += line;
+            return Result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
-        isFirstEditor.putInt("count", ++count);
-        versionEditor.commit();
-        isFirstEditor.commit();
-        return true;
     }
+
+//    public void InitDatabases(String address) {
+//        HttpUtil.sendOkHttpRequest(address, new Callback() {
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//                Toast.makeText(MainActivity.this, "无网络连接", Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onResponse(Call call, Response response) throws IOException {
+//                String responseText = response.body().string();
+//                if (Utility.handleCity(responseText));
+//                else {
+//                    throw new IOException("JSON未成功解析");
+//                }
+//            }
+//        });
+//    }
 
 }
