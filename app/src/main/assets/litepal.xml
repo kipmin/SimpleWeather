@@ -6,6 +6,7 @@
 
     <list>
         <mapping class="com.kipmin.simpleweather.Db.CityDb" />
+        <mapping class="com.kipmin.simpleweather.Db.CityView" />
     </list>
 
 </litepal>

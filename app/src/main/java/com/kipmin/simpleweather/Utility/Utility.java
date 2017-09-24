@@ -44,9 +44,9 @@ public class Utility {
         }
     }
 
-//    public static CityList handleWeatherListResponse(String response) {
+//    public static CityView handleWeatherListResponse(String response) {
 //        try {
-//            return new Gson().fromJson(response, CityList.class);
+//            return new Gson().fromJson(response, CityView.class);
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }

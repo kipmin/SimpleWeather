@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.kipmin.simpleweather.Adapter.CityAdapter;
 import com.kipmin.simpleweather.Db.CityDb;
+import com.kipmin.simpleweather.Db.CityView;
 import com.kipmin.simpleweather.Utility.Utility;
 import com.zaaach.citypicker.CityPickerActivity;
 
@@ -36,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences isFirstPreferences, versionPreferences;
     private TextView result;
     private String city;
+    private List<CityView> cityViewList;
+    private ArrayList<String> dataList;
     private List<WeatherFragment> weatherFragmentList;
 
     @Override
@@ -46,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
         isFirstOpen();//判断是否首次启动或更新后首次启动
         weatherFragmentList = new ArrayList<>();
+        dataList = new ArrayList<>();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -56,10 +60,22 @@ public class MainActivity extends AppCompatActivity {
         cityAdapter = new CityAdapter(manager, this, weatherFragmentList);
         viewPager.setAdapter(cityAdapter);
 
+        cityViewList = DataSupport.findAll(CityView.class); //判断是否添加城市，重建viewpager
+        if (cityViewList.isEmpty()) {
+            //启动
+            startActivityForResult(new Intent(MainActivity.this, CityPickerActivity.class),
+                    REQUEST_CODE_PICK_CITY);
+        } else {
+            for (CityView city : cityViewList) {
+                String cnCity = city.getCnCity();
+                String weatherId = city.getWeatherId();
+                WeatherFragment fragment = new WeatherFragment().newInstance(weatherId);
+                weatherFragmentList.add(fragment);
+                dataList.add(cnCity);
+            }
+            cityAdapter.notifyDataSetChanged();
+        }
 
-        //启动
-        startActivityForResult(new Intent(MainActivity.this, CityPickerActivity.class),
-                REQUEST_CODE_PICK_CITY);
     }
 
     private boolean isFirstOpen() {
@@ -108,7 +124,11 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "Setting", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.select_city:
-                startActivity(new Intent(MainActivity.this, SelectCityActivity.class));
+                Intent intent = new Intent(MainActivity.this, SelectCityActivity.class);
+                intent.putStringArrayListExtra("dataList", dataList);
+                startActivity(intent);
+//                Bundle bundle = new Bundle();
+//                bundle.putSerializable("dataList", dataList);
                 break;
             default:
         }
@@ -116,15 +136,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) { //每次选择城市
         if (requestCode == REQUEST_CODE_PICK_CITY && resultCode == RESULT_OK){
             if (data != null){
                 String city = data.getStringExtra(CityPickerActivity.KEY_PICKED_CITY);
-                List<CityDb> cityDbList;
-                String cityId;
-                cityDbList = DataSupport.where("cnCity = ?", String.valueOf(city)).find(CityDb.class);
-                cityId = cityDbList.get(0).getWeatherId();
-                WeatherFragment fragment = new WeatherFragment().newInstance(cityId);
+                List<CityDb> cityDbList = DataSupport.where("cnCity = ?", String.valueOf(city)).find(CityDb.class);
+                String weatherId = cityDbList.get(0).getWeatherId();
+                CityView cityView = new CityView();
+                cityView.setCnCity(city);
+                cityView.setWeatherId(weatherId);
+                cityView.save();
+                WeatherFragment fragment = new WeatherFragment().newInstance(weatherId);
                 weatherFragmentList.add(fragment);
                 cityAdapter.notifyDataSetChanged();
             }
