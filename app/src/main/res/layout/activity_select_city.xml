@@ -5,13 +5,39 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
-    tools:context="com.kipmin.simpleweather.SelectCityActivity">
+    tools:context="com.kipmin.simpleweather.SelectActivity">
+
+    <!--<Button-->
+        <!--android:id="@+id/select_back"-->
+        <!--android:layout_width="24dp"-->
+        <!--android:layout_height="24dp"-->
+        <!--android:layout_margin="10dp"-->
+        <!--android:background="@drawable/ic_arrow_back_black_24dp"-->
+        <!--/>-->
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/select_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimaryHalf"
+        android:theme="@style/ToolbarTheme"
+        >
+
+        <Button
+            android:id="@+id/select_back"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/ic_arrow_back_black_24dp"
+            />
+
+    </android.support.v7.widget.Toolbar>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/city_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
+        android:layout_below="@id/select_toolbar"
         >
 
     </android.support.v7.widget.RecyclerView>

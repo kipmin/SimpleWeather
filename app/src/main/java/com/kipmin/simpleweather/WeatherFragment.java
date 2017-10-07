@@ -17,7 +17,7 @@ public class WeatherFragment extends Fragment {
 
     private SwipeRefreshLayout swipeRefreshLayout;
 
-    public static WeatherFragment newInstance(String msg) {
+    public WeatherFragment newInstance(String msg) {
         WeatherFragment fragment = new WeatherFragment();
         Bundle bundle = new Bundle();
         bundle.putString("city", msg);

@@ -30,16 +30,17 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = "MainActivity";
     protected static final int REQUEST_CODE_PICK_CITY = 0;
+    protected static final int UPDATE_CITY = 1;
 
-    private ViewPager viewPager;
+
     private CityAdapter cityAdapter;
+    private ViewPager viewPager;
     private SharedPreferences isFirstPreferences, versionPreferences;
     private TextView result;
-    private String city;
     private List<CityView> cityViewList;
-    private ArrayList<String> dataList;
-    private List<WeatherFragment> weatherFragmentList;
+    public List<WeatherFragment> weatherFragmentList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
 
         isFirstOpen();//判断是否首次启动或更新后首次启动
         weatherFragmentList = new ArrayList<>();
-        dataList = new ArrayList<>();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -62,16 +62,15 @@ public class MainActivity extends AppCompatActivity {
 
         cityViewList = DataSupport.findAll(CityView.class); //判断是否添加城市，重建viewpager
         if (cityViewList.isEmpty()) {
-            //启动
-            startActivityForResult(new Intent(MainActivity.this, CityPickerActivity.class),
-                    REQUEST_CODE_PICK_CITY);
+            //更换为引导页
+//            startActivityForResult(new Intent(MainActivity.this, CityPickerActivity.class),
+//                    REQUEST_CODE_PICK_CITY);
         } else {
             for (CityView city : cityViewList) {
                 String cnCity = city.getCnCity();
                 String weatherId = city.getWeatherId();
                 WeatherFragment fragment = new WeatherFragment().newInstance(weatherId);
                 weatherFragmentList.add(fragment);
-                dataList.add(cnCity);
             }
             cityAdapter.notifyDataSetChanged();
         }
@@ -125,10 +124,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.select_city:
                 Intent intent = new Intent(MainActivity.this, SelectCityActivity.class);
-                intent.putStringArrayListExtra("dataList", dataList);
-                startActivity(intent);
-//                Bundle bundle = new Bundle();
-//                bundle.putSerializable("dataList", dataList);
+                startActivityForResult(intent, UPDATE_CITY);
                 break;
             default:
         }
@@ -137,19 +133,43 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) { //每次选择城市
-        if (requestCode == REQUEST_CODE_PICK_CITY && resultCode == RESULT_OK){
-            if (data != null){
-                String city = data.getStringExtra(CityPickerActivity.KEY_PICKED_CITY);
-                List<CityDb> cityDbList = DataSupport.where("cnCity = ?", String.valueOf(city)).find(CityDb.class);
-                String weatherId = cityDbList.get(0).getWeatherId();
-                CityView cityView = new CityView();
-                cityView.setCnCity(city);
-                cityView.setWeatherId(weatherId);
-                cityView.save();
-                WeatherFragment fragment = new WeatherFragment().newInstance(weatherId);
-                weatherFragmentList.add(fragment);
-                cityAdapter.notifyDataSetChanged();
-            }
+        String countCity;
+        switch (requestCode){
+            case REQUEST_CODE_PICK_CITY:
+                if (data != null){
+                    String city = data.getStringExtra(CityPickerActivity.KEY_PICKED_CITY);
+                    if (!DataSupport.where("cncity = ?", city).find(CityView.class).isEmpty()) {
+                        countCity = DataSupport.where("cncity = ?", city).find(CityView.class).get(0).getCnCity();
+                    } else {
+                        countCity = null;
+                    }
+                    if (!city.equals(countCity)) {
+                        List<CityDb> cityDbList = DataSupport.where("cnCity = ?", String.valueOf(city)).find(CityDb.class);
+                        String weatherId = cityDbList.get(0).getWeatherId();
+                        CityView cityView = new CityView();
+                        cityView.setCnCity(city);
+                        cityView.setWeatherId(weatherId);
+                        cityView.save();
+                        WeatherFragment fragment = new WeatherFragment().newInstance(weatherId);
+                        weatherFragmentList.add(fragment);
+                        cityAdapter.notifyDataSetChanged();
+                    } else {
+                        Toast.makeText(this, "已存在该城市，请勿重复添加", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                break;
+            case UPDATE_CITY:
+                int removePosition = data.getIntExtra("posi", weatherFragmentList.size()+1);
+                if (removePosition <= weatherFragmentList.size()) {
+                    weatherFragmentList.remove(removePosition);
+                    cityAdapter.notifyDataSetChanged();
+                } else {
+                    Toast.makeText(this, "删除城市失败", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            default:
+                Log.d(TAG, "onActivityResult: default");
+                break;
         }
     }
 
