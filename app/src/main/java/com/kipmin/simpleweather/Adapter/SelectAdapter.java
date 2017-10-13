@@ -23,7 +23,7 @@ public class SelectAdapter extends BaseItemDraggableAdapter<CityView, BaseViewHo
     @Override
     protected void convert(BaseViewHolder helper, CityView item) {
         Log.d(TAG, "convert: ");
-        helper.setText(R.id.test, item.getCnCity());
+        helper.setText(R.id.list_city_name, item.getCnCity());
     }
 
 //    OnItemDragListener

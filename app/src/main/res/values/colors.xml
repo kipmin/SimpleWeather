@@ -5,4 +5,12 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="colorBackground">#B3E5FC</color>
+    <color name="themePrimary">#009688</color>
+    <color name="themePrimary_dark">#00796B</color>
+    <color name="themePrimary_light">#B2DFDB</color>
+    <color name="themeAccent">#00BCD4</color>
+    <color name="themePrimary_text">#212121</color>
+    <color name="themeSecondary_text">#757575</color>
+    <color name="themeIcons">#FFFFFF</color>
+    <color name="themeDivider">#BDBDBD</color>
 </resources>

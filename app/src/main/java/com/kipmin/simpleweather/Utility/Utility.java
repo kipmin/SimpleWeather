@@ -22,20 +22,11 @@ public class Utility {
             JSONArray cityArray = cityObject.getJSONArray("cityList");
             for (int i = 0; i < cityArray.length(); i++) {
                 JSONObject city = cityArray.getJSONObject(i);
-                if ( i == 0 ) {
-                    CityDb cityDb = new CityDb();
-                    cityDb.setCnCity(city.getString("cnCity"));
-                    cityDb.setWeatherId(city.getString("weatherId"));
-                    cityDb.save();
-                    continue;
-                }
-                if (city.getString("engCity").equals(cityArray.getJSONObject(i-1).getString("engCity")) );
-                else {
-                    CityDb cityDb = new CityDb();
-                    cityDb.setCnCity(city.getString("cnCity"));
-                    cityDb.setWeatherId(city.getString("weatherId"));
-                    cityDb.save();
-                }
+                CityDb cityDb = new CityDb();
+                cityDb.setCnCity(city.getString("cnName"));
+                cityDb.setWeatherId(city.getString("weatherId"));
+                cityDb.save();
+                continue;
             }
             Log.d("Kipmin", "handleCity: OK");
             return true;
@@ -44,20 +35,12 @@ public class Utility {
         }
     }
 
-//    public static CityView handleWeatherListResponse(String response) {
-//        try {
-//            return new Gson().fromJson(response, CityView.class);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return null;
-//    }
-
     public static Weather handleWeatherResponse(String response) {
         try {
             JSONObject jsonObject = new JSONObject(response);
             JSONArray jsonArray = jsonObject.getJSONArray("HeWeather5");
             String weatherContent = jsonArray.getJSONObject(0).toString();
+            Log.d("Utility", "handleWeatherResponse: OK");
             return new Gson().fromJson(weatherContent, Weather.class);
         } catch (Exception e) {
             e.printStackTrace();

@@ -2,7 +2,10 @@ package com.kipmin.simpleweather;
 
 import android.content.Intent;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,6 +14,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.chad.library.adapter.base.callback.ItemDragAndSwipeCallback;
 import com.chad.library.adapter.base.listener.OnItemDragListener;
@@ -22,6 +26,10 @@ import org.litepal.crud.DataSupport;
 
 import java.util.List;
 
+/**
+ * 删除城市界面，拖拽城市排序
+ */
+
 public class SelectCityActivity extends AppCompatActivity {
     
     private static final String TAG = "SelectCityActivity";
@@ -29,6 +37,7 @@ public class SelectCityActivity extends AppCompatActivity {
     private RecyclerView selectCity;
     private SelectAdapter myAdapter;
     private List<CityView> dataList;
+    private final Paint paint = new Paint();;
     private int posi;
 
     @Override
@@ -47,16 +56,20 @@ public class SelectCityActivity extends AppCompatActivity {
         itemTouchHelper.attachToRecyclerView(selectCity);
 
         //开启拖拽
-        myAdapter.enableDragItem(itemTouchHelper, R.id.test, true);
+        myAdapter.enableDragItem(itemTouchHelper, R.id.list_city_name, true);
         myAdapter.setOnItemDragListener(onItemDragListener);
 
         //开启滑动删除
+        paint.setAntiAlias(true);
+        paint.setTextSize(54);
+        paint.setColor(Color.BLACK);
         myAdapter.enableSwipeItem();
         myAdapter.setOnItemSwipeListener(onItemSwipeListener);
         
         selectCity.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));// 添加分割线
         selectCity.setAdapter(myAdapter);
         myAdapter.notifyDataSetChanged();
+        setResult(RESULT_OK, new Intent());//防止返回出错
 
         Button selectBack = (Button) findViewById(R.id.select_back);
         selectBack.setOnClickListener(new View.OnClickListener() {
@@ -86,6 +99,7 @@ public class SelectCityActivity extends AppCompatActivity {
     };
 
     OnItemSwipeListener onItemSwipeListener = new OnItemSwipeListener() {
+
         @Override
         public void onItemSwipeStart(RecyclerView.ViewHolder viewHolder, int pos) {
             Log.d(TAG, "onItemSwipeStart: "+ pos);
@@ -104,12 +118,14 @@ public class SelectCityActivity extends AppCompatActivity {
             Intent intent = new Intent();
             intent.putExtra("posi", pos);
             setResult(RESULT_OK, intent);
+            Toast.makeText(SelectCityActivity.this, dataList.get(pos).getCnCity() + " 已删除 ", Toast.LENGTH_SHORT).show();
             finish();
         }
 
         @Override
         public void onItemSwipeMoving(Canvas canvas, RecyclerView.ViewHolder viewHolder, float dX, float dY, boolean isCurrentlyActive) {
-
+            canvas.drawColor(ContextCompat.getColor(SelectCityActivity.this, R.color.themePrimary));
+            canvas.drawText("删除", 200, 100, paint);
         }
     };
 

@@ -67,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
 //                    REQUEST_CODE_PICK_CITY);
         } else {
             for (CityView city : cityViewList) {
-                String cnCity = city.getCnCity();
                 String weatherId = city.getWeatherId();
                 WeatherFragment fragment = new WeatherFragment().newInstance(weatherId);
                 weatherFragmentList.add(fragment);
@@ -160,11 +159,11 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case UPDATE_CITY:
                 int removePosition = data.getIntExtra("posi", weatherFragmentList.size()+1);
-                if (removePosition <= weatherFragmentList.size()) {
+                if (removePosition < weatherFragmentList.size()) {
                     weatherFragmentList.remove(removePosition);
                     cityAdapter.notifyDataSetChanged();
                 } else {
-                    Toast.makeText(this, "删除城市失败", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(this, "删除城市失败", Toast.LENGTH_SHORT).show();
                 }
                 break;
             default:

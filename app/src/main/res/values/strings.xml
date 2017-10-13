@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">SimpleWeather</string>
+    <string name="default_temperature">N/A℃</string>
 </resources>

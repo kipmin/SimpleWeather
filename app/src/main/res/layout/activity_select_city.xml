@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground"
-    tools:context="com.kipmin.simpleweather.SelectActivity">
+    tools:context="com.kipmin.simpleweather.SelectCityActivity">
 
     <!--<Button-->
         <!--android:id="@+id/select_back"-->
@@ -19,7 +18,7 @@
         android:id="@+id/select_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimaryHalf"
+        android:background="@color/themePrimary_dark"
         android:theme="@style/ToolbarTheme"
         >
 

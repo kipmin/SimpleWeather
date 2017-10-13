@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/weather_frag"
-    android:background="@color/colorBackground"
+    android:background="@color/themePrimary_light"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -12,19 +12,47 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        <ScrollView
+            android:id="@+id/weather_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none"
+            android:overScrollMode="never"
+            >
 
-        <TextView
-            android:id="@+id/result_city"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hello World!"
-            android:layout_centerInParent="true"
-            />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-    </RelativeLayout>
+                <TextView
+                    android:id="@+id/null_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize" />
+
+                <TextView
+                    android:id="@+id/result_city"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hello World!"
+                    android:paddingStart="@dimen/dp_72"
+                    android:paddingEnd="@dimen/dp_4"
+
+                    android:layout_below="@+id/null_text"
+                    />
+
+                <TextView
+                    android:id="@+id/result_temperature"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/default_temperature"
+                    android:paddingStart="@dimen/dp_72"
+                    android:paddingEnd="@dimen/dp_4"
+                    android:layout_alignParentBottom="true"
+                    android:layout_toEndOf="@+id/result_city" />
+
+            </RelativeLayout>
+
+        </ScrollView>
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
