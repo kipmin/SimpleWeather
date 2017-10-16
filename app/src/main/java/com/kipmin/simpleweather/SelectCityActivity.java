@@ -61,7 +61,7 @@ public class SelectCityActivity extends AppCompatActivity {
 
         //开启滑动删除
         paint.setAntiAlias(true);
-        paint.setTextSize(54);
+        paint.setTextSize(56);
         paint.setColor(Color.BLACK);
         myAdapter.enableSwipeItem();
         myAdapter.setOnItemSwipeListener(onItemSwipeListener);
@@ -113,12 +113,12 @@ public class SelectCityActivity extends AppCompatActivity {
         @Override
         public void onItemSwiped(RecyclerView.ViewHolder viewHolder, int pos) {
             posi = pos;
-            Log.d(TAG, "onItemSwiped: " + pos + "dataList: " + dataList.get(pos).getCnCity());
-            DataSupport.deleteAll(CityView.class, "cnCity = ?", dataList.get(pos).getCnCity());
+            Log.d(TAG, "onItemSwiped: " + pos + "dataList: " + dataList.get(pos).getCnName());
+            DataSupport.deleteAll(CityView.class, "cnName = ?", dataList.get(pos).getCnName());
             Intent intent = new Intent();
             intent.putExtra("posi", pos);
             setResult(RESULT_OK, intent);
-            Toast.makeText(SelectCityActivity.this, dataList.get(pos).getCnCity() + " 已删除 ", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SelectCityActivity.this, dataList.get(pos).getCnName() + " 已删除 ", Toast.LENGTH_SHORT).show();
             finish();
         }
 

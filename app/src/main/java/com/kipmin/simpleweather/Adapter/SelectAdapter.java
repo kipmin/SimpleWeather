@@ -17,13 +17,13 @@ public class SelectAdapter extends BaseItemDraggableAdapter<CityView, BaseViewHo
 
     public SelectAdapter(int layoutId ,List<CityView> data) {
         super(layoutId, data);
-        Log.d(TAG, "SelectAdapter: " + data.get(0).getCnCity());
+        Log.d(TAG, "SelectAdapter: " + data.get(0).getCnName());
     }
 
     @Override
     protected void convert(BaseViewHolder helper, CityView item) {
         Log.d(TAG, "convert: ");
-        helper.setText(R.id.list_city_name, item.getCnCity());
+        helper.setText(R.id.list_city_name, item.getCnName());
     }
 
 //    OnItemDragListener

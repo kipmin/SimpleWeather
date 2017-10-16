@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amap.api.location.AMapLocationClient;
 import com.kipmin.simpleweather.Gson.Weather.Weather;
 import com.kipmin.simpleweather.Utility.HttpUtil;
 import com.kipmin.simpleweather.Utility.Utility;
@@ -37,6 +38,7 @@ public class WeatherFragment extends Fragment {
     private String mWeatherId;
     private String city;
     private TextView cityName, temperature;
+    private AMapLocationClient mLocationClient;
 
     public WeatherFragment newInstance(String msg) {
         WeatherFragment fragment = new WeatherFragment();
@@ -61,20 +63,20 @@ public class WeatherFragment extends Fragment {
         }
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String weatherString = preferences.getString("weather", null);
+        String weatherString = preferences.getString("weather" + city, null);
 
-//        if (weatherString != null) {
-            //有缓存的时候
-        // 直接解析天气数据
-//            Log.d(TAG, "onCreateView: if");
-//            Weather weather = Utility.handleWeatherResponse(weatherString);
-//            showWeatherInfo(weather);
-//        } else {
+        if (weatherString != null) {
+//            有缓存的时候
+//         直接解析天气数据
+            Log.d(TAG, "onCreateView: if");
+            Weather weather = Utility.handleWeatherResponse(weatherString);
+            showWeatherInfo(weather);
+        } else {
             //无缓存的时候去服务器查询天气
             mWeatherId = city;
 //            weatherLayout.setVisibility(View.INVISIBLE);
             requestWeather(mWeatherId);
-//        }
+        }
 
         swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -117,7 +119,7 @@ public class WeatherFragment extends Fragment {
                         Log.d(TAG, "run: ");
                         if (weather != null && "ok".equals(weather.status)) {
                             SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(getActivity()).edit();
-                            editor.putString("weather", responseText);
+                            editor.putString("weather"+ city, responseText);
                             editor.apply();
                             mWeatherId = weather.basic.weatherId;
                             showWeatherInfo(weather);

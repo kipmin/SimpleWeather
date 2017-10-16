@@ -8,15 +8,17 @@ import org.litepal.crud.DataSupport;
 
 public class CityDb extends DataSupport {
 
-    private String cnCity;
+    private String cnName;
     private String weatherId;
+//    private Double latitude;
+//    private Double longitude;
 
-    public String getCnCity() {
-        return cnCity;
+    public String getCnName() {
+        return cnName;
     }
 
-    public void setCnCity(String cnCity) {
-        this.cnCity = cnCity;
+    public void setCnName(String cnName) {
+        this.cnName = cnName;
     }
 
     public String getWeatherId() {
@@ -26,4 +28,20 @@ public class CityDb extends DataSupport {
     public void setWeatherId(String weatherId) {
         this.weatherId = weatherId;
     }
+
+//    public Double getLatitude() {
+//        return latitude;
+//    }
+//
+//    public void setLatitude(Double latitude) {
+//        this.latitude = latitude;
+//    }
+//
+//    public Double getLongitude() {
+//        return longitude;
+//    }
+//
+//    public void setLongitude(Double longitude) {
+//        this.longitude = longitude;
+//    }
 }

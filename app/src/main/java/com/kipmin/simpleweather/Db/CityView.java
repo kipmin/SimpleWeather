@@ -8,15 +8,15 @@ import org.litepal.crud.DataSupport;
 
 public class CityView extends DataSupport {
 
-    private String cnCity;
+    private String cnName;
     private String weatherId;
 
-    public String getCnCity() {
-        return cnCity;
+    public String getCnName() {
+        return cnName;
     }
 
-    public void setCnCity(String cnCity) {
-        this.cnCity = cnCity;
+    public void setCnName(String cnName) {
+        this.cnName = cnName;
     }
 
     public String getWeatherId() {

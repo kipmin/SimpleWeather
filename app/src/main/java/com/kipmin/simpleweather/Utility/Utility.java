@@ -3,7 +3,6 @@ package com.kipmin.simpleweather.Utility;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.kipmin.simpleweather.Db.CityDb;
 import com.kipmin.simpleweather.Gson.Weather.Weather;
 
 import org.json.JSONArray;
@@ -15,25 +14,26 @@ import org.json.JSONObject;
 
 public class Utility {
 
-    public static boolean handleCity (String response) {
-        try {
-            JSONObject jsonObject = new JSONObject(response);
-            JSONObject cityObject = jsonObject.getJSONObject("WeatherList");
-            JSONArray cityArray = cityObject.getJSONArray("cityList");
-            for (int i = 0; i < cityArray.length(); i++) {
-                JSONObject city = cityArray.getJSONObject(i);
-                CityDb cityDb = new CityDb();
-                cityDb.setCnCity(city.getString("cnName"));
-                cityDb.setWeatherId(city.getString("weatherId"));
-                cityDb.save();
-                continue;
-            }
-            Log.d("Kipmin", "handleCity: OK");
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
+//    public static boolean handleCity (String response) {
+//        try {
+//            JSONObject jsonObject = new JSONObject(response);
+//            JSONObject cityObject = jsonObject.getJSONObject("WeatherList");
+//            JSONArray cityArray = cityObject.getJSONArray("cityList");
+//            for (int i = 0; i < cityArray.length(); i++) {
+//                JSONObject city = cityArray.getJSONObject(i);
+//                CityDb cityDb = new CityDb();
+//                cityDb.setCnName(city.getString("cnName"));
+//                cityDb.setWeatherId(city.getString("weatherId"));
+////                cityDb.setLatitude(Double.valueOf(city.getString("lati")));
+////                cityDb.setLongitude(Double.valueOf(city.getString("long")));
+//                cityDb.save();
+//            }
+//            Log.d("Kipmin", "handleCity: OK");
+//            return true;
+//        } catch (Exception e) {
+//            return false;
+//        }
+//    }
 
     public static Weather handleWeatherResponse(String response) {
         try {

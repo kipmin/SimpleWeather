@@ -33,7 +33,7 @@
                     android:id="@+id/result_city"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Hello World!"
+                    android:text="@string/default_city_view_name"
                     android:paddingStart="@dimen/dp_72"
                     android:paddingEnd="@dimen/dp_4"
 
