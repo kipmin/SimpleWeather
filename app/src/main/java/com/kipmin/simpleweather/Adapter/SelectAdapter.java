@@ -17,7 +17,7 @@ public class SelectAdapter extends BaseItemDraggableAdapter<CityView, BaseViewHo
 
     public SelectAdapter(int layoutId ,List<CityView> data) {
         super(layoutId, data);
-        Log.d(TAG, "SelectAdapter: " + data.get(0).getCnName());
+//        Log.d(TAG, "SelectAdapter: " + data.get(0).getCnName());
     }
 
     @Override

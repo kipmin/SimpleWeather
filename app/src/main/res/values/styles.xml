@@ -18,5 +18,9 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="SwipeAppTheme" parent="AppTheme">
+        <item name="android:windowIsTranslucent">true</item> <!-- 将窗口设置为半透明-->
+    </style>
+
 
 </resources>

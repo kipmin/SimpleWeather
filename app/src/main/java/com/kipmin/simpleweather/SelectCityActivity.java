@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,11 +25,14 @@ import org.litepal.crud.DataSupport;
 
 import java.util.List;
 
+import me.imid.swipebacklayout.lib.SwipeBackLayout;
+import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
+
 /**
  * 删除城市界面，拖拽城市排序
  */
 
-public class SelectCityActivity extends AppCompatActivity {
+public class SelectCityActivity extends SwipeBackActivity{
     
     private static final String TAG = "SelectCityActivity";
 
@@ -47,6 +49,9 @@ public class SelectCityActivity extends AppCompatActivity {
         dataList = DataSupport.findAll(CityView.class);
         selectCity = (RecyclerView) findViewById(R.id.city_list);
 
+        //开启侧滑返回
+        setSwipeBackEnable(true);
+        getSwipeBackLayout().setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);
 
         selectCity.setLayoutManager(new LinearLayoutManager(this));
         myAdapter = new SelectAdapter(R.layout.city_list, dataList);
