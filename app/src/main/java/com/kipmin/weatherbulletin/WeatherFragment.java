@@ -1,4 +1,4 @@
-package com.kipmin.simpleweather;
+package com.kipmin.weatherbulletin;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -13,9 +13,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amap.api.location.AMapLocationClient;
-import com.kipmin.simpleweather.Gson.Weather.Weather;
-import com.kipmin.simpleweather.Utility.HttpUtil;
-import com.kipmin.simpleweather.Utility.Utility;
+import com.kipmin.weatherbulletin.Gson.Weather.Weather;
+import com.kipmin.weatherbulletin.Utility.HttpUtil;
+import com.kipmin.weatherbulletin.Utility.Utility;
 
 import java.io.IOException;
 
@@ -32,7 +32,7 @@ import static org.litepal.LitePalBase.TAG;
 
 public class WeatherFragment extends Fragment {
 
-    private static final String HEFEN_KEY = "fe14c5fd224e466894854e7b19d1634b";
+    private static final String HEFEN_KEY = "127c71e61f92434b892bd66c38aae169";
 
     private SwipeRefreshLayout swipeRefreshLayout;
     private String mWeatherId;

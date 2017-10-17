@@ -1,4 +1,4 @@
-package com.kipmin.simpleweather.Adapter;
+package com.kipmin.weatherbulletin.Adapter;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 
-import com.kipmin.simpleweather.WeatherFragment;
+import com.kipmin.weatherbulletin.WeatherFragment;
 
 import java.util.List;
 

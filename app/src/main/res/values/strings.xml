@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SimpleWeather</string>
+    <string name="app_name">天气简报</string>
     <string name="default_city_view_name">CityName</string>
     <string name="default_temperature">N/A℃</string>
 </resources>

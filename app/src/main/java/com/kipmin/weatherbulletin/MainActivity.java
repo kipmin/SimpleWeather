@@ -1,4 +1,4 @@
-package com.kipmin.simpleweather;
+package com.kipmin.weatherbulletin;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,9 +11,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.kipmin.simpleweather.Adapter.CityAdapter;
-import com.kipmin.simpleweather.Db.CityDb;
-import com.kipmin.simpleweather.Db.CityView;
+import com.kipmin.weatherbulletin.Adapter.CityAdapter;
+import com.kipmin.weatherbulletin.Db.CityDb;
+import com.kipmin.weatherbulletin.Db.CityView;
 import com.zaaach.citypicker.CityPickerActivity;
 
 import org.litepal.crud.DataSupport;

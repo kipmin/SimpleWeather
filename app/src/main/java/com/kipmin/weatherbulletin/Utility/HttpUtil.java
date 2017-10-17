@@ -1,4 +1,4 @@
-package com.kipmin.simpleweather.Utility;
+package com.kipmin.weatherbulletin.Utility;
 
 import android.util.Log;
 

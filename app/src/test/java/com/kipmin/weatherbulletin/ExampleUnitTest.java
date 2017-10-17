@@ -1,4 +1,4 @@
-package com.kipmin.simpleweather;
+package com.kipmin.weatherbulletin;
 
 import org.junit.Test;
 

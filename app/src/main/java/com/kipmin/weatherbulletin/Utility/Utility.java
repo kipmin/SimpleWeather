@@ -1,9 +1,9 @@
-package com.kipmin.simpleweather.Utility;
+package com.kipmin.weatherbulletin.Utility;
 
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.kipmin.simpleweather.Gson.Weather.Weather;
+import com.kipmin.weatherbulletin.Gson.Weather.Weather;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

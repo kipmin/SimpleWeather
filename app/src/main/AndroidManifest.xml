@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.kipmin.simpleweather">
+    package="com.kipmin.weatherbulletin">
 
     <application
         android:name="org.litepal.LitePalApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/weather"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/weather"
         android:supportsRtl="true"
         android:theme="@style/SwipeAppTheme">
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="6a8fb5a12dbfeaf5a0f41ff87ea40a8d" />
 
-        <activity android:name=".MainActivity">
+        <activity android:name="com.kipmin.weatherbulletin.MainActivity">
             <!--<intent-filter>-->
                 <!--<action android:name="android.intent.action.MAIN" />-->
 
@@ -26,8 +26,8 @@
             android:screenOrientation="portrait"
             android:theme="@style/CityPicker.NoActionBar"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity android:name=".SelectCityActivity" />
-        <activity android:name=".SplashActivity">
+        <activity android:name="com.kipmin.weatherbulletin.SelectCityActivity" />
+        <activity android:name="com.kipmin.weatherbulletin.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

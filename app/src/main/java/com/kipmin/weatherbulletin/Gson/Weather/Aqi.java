@@ -1,4 +1,4 @@
-package com.kipmin.simpleweather.Gson.Weather;
+package com.kipmin.weatherbulletin.Gson.Weather;
 
 import com.google.gson.annotations.SerializedName;
 

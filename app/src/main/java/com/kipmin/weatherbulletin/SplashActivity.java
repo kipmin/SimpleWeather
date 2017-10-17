@@ -1,4 +1,4 @@
-package com.kipmin.simpleweather;
+package com.kipmin.weatherbulletin;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,7 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ProgressBar;
 
-import com.kipmin.simpleweather.Db.CityDb;
+import com.kipmin.weatherbulletin.Db.CityDb;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

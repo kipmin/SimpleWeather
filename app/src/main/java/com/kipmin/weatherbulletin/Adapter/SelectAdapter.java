@@ -1,11 +1,11 @@
-package com.kipmin.simpleweather.Adapter;
+package com.kipmin.weatherbulletin.Adapter;
 
 import android.util.Log;
 
 import com.chad.library.adapter.base.BaseItemDraggableAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.kipmin.simpleweather.Db.CityView;
-import com.kipmin.simpleweather.R;
+import com.kipmin.weatherbulletin.Db.CityView;
+import com.kipmin.weatherbulletin.R;
 
 import java.util.List;
 

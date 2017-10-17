@@ -1,4 +1,4 @@
-package com.kipmin.simpleweather;
+package com.kipmin.weatherbulletin;
 
 import android.content.Intent;
 import android.graphics.Canvas;
@@ -18,8 +18,8 @@ import android.widget.Toast;
 import com.chad.library.adapter.base.callback.ItemDragAndSwipeCallback;
 import com.chad.library.adapter.base.listener.OnItemDragListener;
 import com.chad.library.adapter.base.listener.OnItemSwipeListener;
-import com.kipmin.simpleweather.Adapter.SelectAdapter;
-import com.kipmin.simpleweather.Db.CityView;
+import com.kipmin.weatherbulletin.Adapter.SelectAdapter;
+import com.kipmin.weatherbulletin.Db.CityView;
 
 import org.litepal.crud.DataSupport;
 

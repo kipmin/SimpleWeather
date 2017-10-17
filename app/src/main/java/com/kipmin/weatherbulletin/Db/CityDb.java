@@ -1,4 +1,4 @@
-package com.kipmin.simpleweather.Db;
+package com.kipmin.weatherbulletin.Db;
 
 import org.litepal.crud.DataSupport;
 
