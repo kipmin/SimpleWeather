@@ -23,16 +23,16 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    public List<WeatherFragment> weatherFragmentList;
+
     private static final String TAG = "MainActivity";
     protected static final int REQUEST_CODE_PICK_CITY = 0;
     protected static final int UPDATE_CITY = 1;
 
 
+    protected ViewPager viewPager;
+    protected List<CityView> cityViewList;
     private CityAdapter cityAdapter;
-    private ViewPager viewPager;
-//    private SharedPreferences isFirstPreferences, versionPreferences;
-    private List<CityView> cityViewList;
-    public List<WeatherFragment> weatherFragmentList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        isFirstOpen();//判断是否首次启动或更新后首次启动
         weatherFragmentList = new ArrayList<>();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -50,12 +49,15 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager manager = getSupportFragmentManager();
         cityAdapter = new CityAdapter(manager, this, weatherFragmentList);
         viewPager.setAdapter(cityAdapter);
+//        SmartTabLayout viewPagerTab = (SmartTabLayout) findViewById(R.id.viewpagertab);
+//        viewPagerTab.setViewPager(viewPager);
+
 
         cityViewList = DataSupport.findAll(CityView.class); //判断是否添加城市，重建viewpager
         if (cityViewList.isEmpty()) {
             //更换为引导页
-//            startActivityForResult(new Intent(MainActivity.this, CityPickerActivity.class),
-//                    REQUEST_CODE_PICK_CITY);
+            startActivityForResult(new Intent(MainActivity.this, CityPickerActivity.class),
+                    REQUEST_CODE_PICK_CITY);
         } else {
             for (CityView city : cityViewList) {
                 String weatherId = city.getWeatherId();
@@ -66,32 +68,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-
-//    private boolean isFirstOpen() {
-//        isFirstPreferences = getSharedPreferences("count", MODE_PRIVATE);
-//        float nowVersionCode = getVersionCode(this);
-//        Log.i("MainActivity", "isFirstOpen: " + nowVersionCode);
-//        versionPreferences = getSharedPreferences("version", MODE_PRIVATE);
-//        int count = isFirstPreferences.getInt("count", 0);
-//        float spVersionCode = versionPreferences.getFloat("version", 0);
-//        SharedPreferences.Editor versionEditor = versionPreferences.edit();
-//        SharedPreferences.Editor isFirstEditor = isFirstPreferences.edit();
-//
-//        if (count == 0) { //应用被首次安装启动
-//            versionEditor.putFloat("spVersionCode", nowVersionCode);
-//            InitDatabases(getFromAssets("cityList.json"));
-//        } else if (nowVersionCode > spVersionCode){ //更新后首次启动
-//            versionEditor.putFloat("spVersionCode", nowVersionCode);
-//        }
-//        isFirstEditor.putInt("count", ++count);
-//        versionEditor.apply();
-//        isFirstEditor.apply();
-//        return true;
-//    }
-//
-//    private void InitDatabases(String response) {
-//        Utility.handleCity(response);
-//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -162,49 +138,5 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
     }
-
-//    private float getVersionCode(Context context) {
-//        float versionCode = 0;
-//        try {
-//            versionCode = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionCode;
-//        } catch (PackageManager.NameNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//        return  versionCode;
-//    }
-//
-//    // 读取assets中的文件
-//    private String getFromAssets(String fileName){
-//        try {
-//            InputStreamReader inputReader = new InputStreamReader( getResources().getAssets().open(fileName) );
-//            BufferedReader bufReader = new BufferedReader(inputReader);
-//            String line="";
-//            String Result="";
-//            while((line = bufReader.readLine()) != null)
-//                Result += line;
-//            return Result;
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-//    }
-
-//    public void InitDatabases(String address) {
-//        HttpUtil.sendOkHttpRequest(address, new Callback() {
-//            @Override
-//            public void onFailure(Call call, IOException e) {
-//                Toast.makeText(MainActivity.this, "无网络连接", Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onResponse(Call call, Response response) throws IOException {
-//                String responseText = response.body().string();
-//                if (Utility.handleCity(responseText));
-//                else {
-//                    throw new IOException("JSON未成功解析");
-//                }
-//            }
-//        });
-//    }
 
 }

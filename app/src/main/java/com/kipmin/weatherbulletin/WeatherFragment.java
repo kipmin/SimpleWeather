@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.amap.api.location.AMapLocationClient;
 import com.kipmin.weatherbulletin.Gson.Weather.Weather;
 import com.kipmin.weatherbulletin.Utility.HttpUtil;
 import com.kipmin.weatherbulletin.Utility.Utility;
@@ -38,7 +37,6 @@ public class WeatherFragment extends Fragment {
     private String mWeatherId;
     private String city;
     private TextView cityName, temperature;
-    private AMapLocationClient mLocationClient;
 
     public WeatherFragment newInstance(String msg) {
         WeatherFragment fragment = new WeatherFragment();
@@ -50,7 +48,6 @@ public class WeatherFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
 
         View view  = inflater.inflate(R.layout.weather_fragment, null);
         cityName = (TextView) view.findViewById(R.id.result_city);
@@ -77,6 +74,7 @@ public class WeatherFragment extends Fragment {
 //            weatherLayout.setVisibility(View.INVISIBLE);
             requestWeather(mWeatherId);
         }
+//        int position = FragmentPagerItem.getPosition(getArguments());
 
         swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

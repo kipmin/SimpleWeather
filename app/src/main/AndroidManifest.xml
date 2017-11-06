@@ -14,26 +14,33 @@
             android:name="com.amap.api.v2.apikey"
             android:value="6a8fb5a12dbfeaf5a0f41ff87ea40a8d" />
 
-        <activity android:name="com.kipmin.weatherbulletin.MainActivity">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
+        <activity android:name=".MainActivity">
 
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity
             android:name="com.zaaach.citypicker.CityPickerActivity"
             android:screenOrientation="portrait"
             android:theme="@style/CityPicker.NoActionBar"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity android:name="com.kipmin.weatherbulletin.SelectCityActivity" />
-        <activity android:name="com.kipmin.weatherbulletin.SplashActivity">
+        <activity android:name=".SelectCityActivity" />
+        <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".Service.WeatherService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>
